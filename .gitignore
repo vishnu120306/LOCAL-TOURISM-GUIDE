@@ -12,7 +12,6 @@ env/
 # Django
 *.log
 *.pot
-db.sqlite3
 local_settings.py
 media/
 

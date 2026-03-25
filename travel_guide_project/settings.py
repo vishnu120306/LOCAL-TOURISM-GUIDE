@@ -75,12 +75,27 @@ WSGI_APPLICATION = 'travel_guide_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+import os
+
+if os.environ.get('VERCEL') == '1':
+    db_path = BASE_DIR / 'db.sqlite3'
+    tmp_db_path = '/tmp/db.sqlite3'
+    if not os.path.exists(tmp_db_path) and os.path.exists(db_path):
+        import shutil
+        shutil.copy2(db_path, tmp_db_path)
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': tmp_db_path,
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 
 # Password validation
