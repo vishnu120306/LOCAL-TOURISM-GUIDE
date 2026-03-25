@@ -1,0 +1,342 @@
+{% extends 'guide/base.html' %}
+{% load static %}
+
+{% block title %}Start Exploring Kerala - Local Tourist Guide{% endblock %}
+
+{% block content %}
+<div class="start-exploring">
+    <div class="exploring-hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Welcome to <span class="highlight">God's Own Country</span></h1>
+            <p>Discover the beauty of Kerala through its magnificent attractions and vibrant events</p>
+
+            <div class="explore-nav-buttons">
+                <a href="{% url 'guide:attractions' %}" class="btn-nav-hero">Attractions</a>
+                <a href="{% url 'guide:events' %}" class="btn-nav-hero">Events</a>
+                <a href="{% url 'guide:transport_list' %}" class="btn-nav-hero">Transport</a>
+                <a href="{% url 'guide:guide_list' %}" class="btn-nav-hero">Our Guides</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <a href="{% url 'guide:home' %}" class="btn-back-home"
+            style="display: inline-flex; align-items: center; gap: 0.5rem; color: var(--text-light); text-decoration: none; margin: 2rem 0; font-weight: 600;">
+            <i class="fas fa-arrow-left"></i> Back to Home
+        </a>
+        <!-- Attractions Section -->
+        <div class="section-title">
+            <h2><i class="fas fa-landmark"></i> Must-Visit Attractions</h2>
+            <p>Explore Kerala's most breathtaking destinations</p>
+            <a href="{% url 'guide:attractions' %}" class="btn-view-all">View All Attractions <i
+                    class="fas fa-arrow-right"></i></a>
+        </div>
+
+        <div class="attractions-grid">
+            {% for location in locations %}
+            <div class="attraction-card">
+                <div class="attraction-image">
+                    {% if location.image %}
+                    <img src="{{ location.image.url }}" alt="{{ location.name }}">
+                    {% else %}
+                    <div class="placeholder-image attraction-placeholder">
+                        <i class="fas fa-mountain"></i>
+                    </div>
+                    {% endif %}
+                    <div class="attraction-overlay">
+                        <span class="location-tag"><i class="fas fa-map-marker-alt"></i> {{ location.address }}</span>
+                    </div>
+                </div>
+                <div class="attraction-content" style="display: flex; flex-direction: column; flex: 1;">
+                    <h3>{{ location.name }}</h3>
+                    <p style="margin-bottom: 1.5rem;">{{ location.description|truncatewords:18 }}</p>
+                    <div style="margin-top: auto; display: flex; gap: 0.75rem;">
+                        <a href="{% url 'guide:book_item' 'attraction' location.id %}" class="btn-card"
+                            style="flex: 1; justify-content: center; background: #e0f2fe; color: var(--primary-teal); padding: 0.6rem; border-radius: 8px; text-decoration: none; font-weight: 600; text-align: center;">
+                            Book Now
+                        </a>
+                        <a href="{% url 'guide:location_detail' location.id %}" class="btn-explore"
+                            style="flex: 1; justify-content: center; border: 1px solid var(--primary-teal); padding: 0.6rem; border-radius: 8px; text-decoration: none;">
+                            View Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p class="no-data">No attractions available yet.</p>
+            {% endfor %}
+        </div>
+
+        <!-- Events Section -->
+        <div class="section-title" style="margin-top: 5rem;">
+            <h2><i class="fas fa-calendar-star"></i> Events & Festivals</h2>
+            <p>Experience the rich traditions of Kerala</p>
+        </div>
+
+        <div class="events-timeline">
+            {% for event in events %}
+            <div class="event-card">
+                <div class="event-date">
+                    <span class="day">{{ event.start_date|date:"d" }}</span>
+                    <span class="month">{{ event.start_date|date:"M" }}</span>
+                    <span class="year">{{ event.start_date|date:"Y" }}</span>
+                </div>
+                <div class="event-content">
+                    <div class="event-image">
+                        {% if event.image %}
+                        <img src="{{ event.image.url }}" alt="{{ event.name }}">
+                        {% else %}
+                        <div class="placeholder-image event-placeholder">
+                            <i class="fas fa-theater-masks"></i>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="event-details">
+                        <div class="event-header"
+                            style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+                            <h3 style="margin: 0;">{{ event.name }}</h3>
+                            <span
+                                style="font-size: 0.9rem; color: var(--primary-teal); background: rgba(16, 185, 129, 0.1); padding: 0.25rem 0.75rem; border-radius: 20px;">
+                                <i class="fas fa-map-marker-alt"></i> {{ event.location.name }}
+                            </span>
+                        </div>
+                        <p>{{ event.description }}</p>
+                        <div class="event-footer" style="margin-top: 1rem;">
+                            <a href="{% url 'guide:book_item' 'event' event.id %}" class="btn-explore"
+                                style="background: var(--primary-teal); color: white; padding: 0.5rem 1.5rem; border-radius: 50px;">
+                                Book Ticket <i class="fas fa-ticket-alt" style="margin-left: 0.5rem;"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p class="no-data">No events scheduled yet.</p>
+            {% endfor %}
+        </div>
+
+        <!-- Call to Action -->
+        <div class="cta-section">
+            <h2>Ready to Explore?</h2>
+            <p>Book a professional guide and make your Kerala trip unforgettable</p>
+            <a href="{% url 'guide:guide_list' %}" class="btn-primary">Meet Our Guides</a>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Full Page Background */
+    body {
+        background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)),
+            url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=2070') center/cover no-repeat fixed;
+    }
+
+    .start-exploring {
+        background: transparent;
+    }
+
+    /* Hero Section */
+    .exploring-hero {
+        height: 60vh;
+        background: transparent;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: white;
+        margin-top: -80px;
+        padding-top: 80px;
+    }
+
+    .exploring-hero .hero-overlay {
+        display: none;
+    }
+
+    .exploring-hero .hero-content {
+        position: relative;
+        z-index: 2;
+        padding: 0 20px;
+    }
+
+    .exploring-hero h1 {
+        font-family: 'Playfair Display', serif;
+        font-size: 4rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .exploring-hero .highlight {
+        color: #fbbf24;
+        font-style: italic;
+    }
+
+    .exploring-hero p {
+        font-size: 1.5rem;
+        opacity: 0.95;
+        max-width: 800px;
+        margin: 0 auto;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .explore-nav-buttons {
+        margin-top: 2.5rem;
+        display: flex;
+        gap: 1.5rem;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .btn-nav-hero {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: white;
+        padding: 1rem 2.5rem;
+        border-radius: 100px;
+        font-weight: 700;
+        text-decoration: none;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        font-size: 1.1rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-nav-hero:hover {
+        background: #fbbf24;
+        border-color: #fbbf24;
+        color: #134e4a;
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(251, 191, 36, 0.4);
+    }
+
+    /* Transparent Container and Text Readability */
+    .container {
+        background: transparent;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+    }
+
+    .btn-back-home {
+        color: white !important;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        transition: all 0.3s ease;
+    }
+
+    .btn-back-home:hover {
+        color: #fbbf24 !important;
+        transform: translateX(-5px);
+    }
+
+    .section-title h2 {
+        font-family: 'Playfair Display', serif;
+        font-size: 3rem;
+        color: white;
+        text-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .section-title h2 i {
+        color: #fbbf24;
+    }
+
+    .section-title p {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 1.2rem;
+        margin-bottom: 2rem;
+    }
+
+    .btn-view-all {
+        color: #fbbf24;
+        font-weight: 700;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .btn-view-all:hover {
+        gap: 0.8rem;
+        opacity: 0.8;
+    }
+
+    /* Cards Enhancements for Dark Background */
+    .attraction-card {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+    }
+
+    .attraction-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .event-card {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        margin-bottom: 2.5rem;
+    }
+
+    .event-date {
+        background: linear-gradient(135deg, #0f766e, #14b8a6) !important;
+    }
+
+    /* Call to Action Section */
+    .cta-section {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 5rem 2rem;
+        border-radius: 30px;
+        color: white;
+        text-align: center;
+        margin: 6rem 0;
+    }
+
+    .cta-section h2 {
+        font-size: 3.5rem;
+        font-family: 'Playfair Display', serif;
+        margin-bottom: 1rem;
+    }
+
+    .cta-section .btn-primary {
+        background: #fbbf24;
+        color: #134e4a;
+        padding: 1.2rem 3rem;
+        border-radius: 100px;
+        font-weight: 800;
+        font-size: 1.2rem;
+        display: inline-block;
+        transition: all 0.3s ease;
+    }
+
+    .cta-section .btn-primary:hover {
+        transform: scale(1.05);
+        box-shadow: 0 10px 25px rgba(251, 191, 36, 0.4);
+    }
+
+    @media (max-width: 768px) {
+        .exploring-hero h1 {
+            font-size: 2.8rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.22rem;
+        }
+
+        .cta-section h2 {
+            font-size: 2.5rem;
+        }
+    }
+</style>
+{% endblock %}

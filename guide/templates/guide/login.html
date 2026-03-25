@@ -1,0 +1,236 @@
+{% extends 'guide/base.html' %}
+{% load static %}
+
+{% block title %}Login - Local Tourist Guide{% endblock %}
+
+{% block content %}
+<style>
+    /* Full Page Immersive Background */
+    body {
+        background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.65)),
+        url("{% static 'images/auth_bg.png' %}") center/cover no-repeat fixed;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .auth-page {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+        margin-top: -80px;
+        /* Counteract navbar padding */
+    }
+
+    .glass-auth-card {
+        background: rgba(255, 255, 255, 0.12);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 40px;
+        padding: 4rem 3.5rem;
+        width: 100%;
+        max-width: 480px;
+        box-shadow: 0 40px 100px rgba(0, 0, 0, 0.4);
+        position: relative;
+        overflow: hidden;
+        animation: cardFadeIn 0.8s ease-out;
+    }
+
+    @keyframes cardFadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .btn-back-home {
+        position: absolute;
+        top: 2rem;
+        left: 2rem;
+        color: rgba(255, 255, 255, 0.7);
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .btn-back-home:hover {
+        color: #fbbf24;
+        transform: translateX(-5px);
+    }
+
+    .auth-header {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    .auth-header h1 {
+        font-family: 'Playfair Display', serif;
+        font-size: 3rem;
+        color: white;
+        margin-bottom: 0.5rem;
+        font-weight: 700;
+    }
+
+    .auth-header .subtitle {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 1.1rem;
+        font-weight: 500;
+    }
+
+    .form-group {
+        margin-bottom: 2rem;
+        position: relative;
+    }
+
+    .form-group label {
+        display: block;
+        font-size: 0.85rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        color: #fbbf24;
+        margin-bottom: 0.75rem;
+        padding-left: 0.5rem;
+    }
+
+    .glass-input {
+        width: 100%;
+        padding: 1.25rem 1.5rem;
+        background: rgba(255, 255, 255, 0.08);
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        color: white;
+        font-size: 1.1rem;
+        font-family: 'Inter', sans-serif;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .glass-input:focus {
+        outline: none;
+        background: rgba(255, 255, 255, 0.15);
+        border-color: #fbbf24;
+        box-shadow: 0 0 20px rgba(251, 191, 36, 0.2);
+    }
+
+    .glass-input::placeholder {
+        color: rgba(255, 255, 255, 0.4);
+    }
+
+    .btn-login-premium {
+        width: 100%;
+        padding: 1.4rem;
+        background: linear-gradient(135deg, #fbbf24, #f59e0b);
+        border: none;
+        border-radius: 18px;
+        color: #134e4a;
+        font-size: 1.2rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        cursor: pointer;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        margin-top: 1rem;
+        box-shadow: 0 10px 25px rgba(251, 191, 36, 0.3);
+    }
+
+    .btn-login-premium:hover {
+        transform: translateY(-5px) scale(1.02);
+        background: white;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .auth-footer {
+        text-align: center;
+        margin-top: 2.5rem;
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 1rem;
+    }
+
+    .auth-footer a {
+        color: #fbbf24;
+        text-decoration: none;
+        font-weight: 700;
+        margin-left: 0.5rem;
+        transition: color 0.3s;
+    }
+
+    .auth-footer a:hover {
+        color: white;
+        text-decoration: underline;
+    }
+
+    /* Error Handling Styles */
+    .alert-error {
+        background: rgba(239, 68, 68, 0.2);
+        border: 1px solid rgba(239, 68, 68, 0.5);
+        color: #fecaca;
+        padding: 1rem;
+        border-radius: 12px;
+        margin-bottom: 2rem;
+        text-align: center;
+        font-weight: 600;
+    }
+
+    @media (max-width: 480px) {
+        .glass-auth-card {
+            padding: 3rem 2rem;
+        }
+
+        .auth-header h1 {
+            font-size: 2.2rem;
+        }
+    }
+</style>
+
+<div class="auth-page">
+    <div class="glass-auth-card">
+        <a href="{% url 'guide:home' %}" class="btn-back-home">
+            <i class="fas fa-chevron-left"></i> Home
+        </a>
+
+        <div class="auth-header">
+            <h1>Welcome Back</h1>
+            <p class="subtitle">Login to your luxury portal</p>
+        </div>
+
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" name="username" id="username" class="glass-input" placeholder="Your account name"
+                    required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" class="glass-input" placeholder="••••••••"
+                    required>
+            </div>
+            <button type="submit" class="btn-login-premium">
+                Login <i class="fas fa-sign-in-alt" style="margin-left: 0.5rem;"></i>
+            </button>
+        </form>
+
+        <div class="auth-footer">
+            Don't have an account? <a href="{% url 'guide:register' %}">Create One</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

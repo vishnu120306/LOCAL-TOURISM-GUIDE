@@ -1,0 +1,276 @@
+{% extends 'guide/base.html' %}
+{% load static %}
+
+{% block title %}Register - Local Tourist Guide{% endblock %}
+
+{% block content %}
+<style>
+    /* Full Page Immersive Background */
+    body {
+        background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.65)),
+        url("{% static 'images/auth_bg.png' %}") center/cover no-repeat fixed;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .auth-page {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 4rem 2rem;
+        margin-top: -80px;
+        /* Counteract navbar padding */
+    }
+
+    .glass-auth-card {
+        background: rgba(255, 255, 255, 0.12);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 40px;
+        padding: 4rem 3.5rem;
+        width: 100%;
+        max-width: 550px;
+        box-shadow: 0 40px 100px rgba(0, 0, 0, 0.4);
+        position: relative;
+        overflow: hidden;
+        animation: cardFadeIn 0.8s ease-out;
+    }
+
+    @keyframes cardFadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .btn-back-home {
+        position: absolute;
+        top: 2rem;
+        left: 2rem;
+        color: rgba(255, 255, 255, 0.7);
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .btn-back-home:hover {
+        color: #fbbf24;
+        transform: translateX(-5px);
+    }
+
+    .auth-header {
+        text-align: center;
+        margin-bottom: 2.5rem;
+    }
+
+    .auth-header h1 {
+        font-family: 'Playfair Display', serif;
+        font-size: 2.8rem;
+        color: white;
+        margin-bottom: 0.5rem;
+        font-weight: 700;
+    }
+
+    .auth-header .subtitle {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 1.1rem;
+        font-weight: 500;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+    }
+
+    .form-group-full {
+        grid-column: span 2;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+        position: relative;
+    }
+
+    .form-group label {
+        display: block;
+        font-size: 0.8rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1.2px;
+        color: #fbbf24;
+        margin-bottom: 0.6rem;
+        padding-left: 0.5rem;
+    }
+
+    .glass-input {
+        width: 100%;
+        padding: 1rem 1.25rem;
+        background: rgba(255, 255, 255, 0.08);
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        border-radius: 14px;
+        color: white;
+        font-size: 1rem;
+        font-family: 'Inter', sans-serif;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .glass-input:focus {
+        outline: none;
+        background: rgba(255, 255, 255, 0.15);
+        border-color: #fbbf24;
+        box-shadow: 0 0 20px rgba(251, 191, 36, 0.2);
+    }
+
+    .checkbox-group {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        background: rgba(255, 255, 255, 0.05);
+        padding: 1rem;
+        border-radius: 14px;
+        border: 1px dashed rgba(255, 255, 255, 0.2);
+        margin-bottom: 2rem;
+    }
+
+    .checkbox-group label {
+        margin-bottom: 0;
+        color: white;
+        text-transform: none;
+        letter-spacing: normal;
+        font-size: 0.95rem;
+        cursor: pointer;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+        width: 1.2rem;
+        height: 1.2rem;
+        cursor: pointer;
+        accent-color: #fbbf24;
+    }
+
+    .btn-reg-premium {
+        width: 100%;
+        padding: 1.25rem;
+        background: linear-gradient(135deg, #134e4a, #0f766e);
+        border: 1px solid rgba(251, 191, 36, 0.4);
+        border-radius: 18px;
+        color: #fbbf24;
+        font-size: 1.1rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        cursor: pointer;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        margin-top: 0.5rem;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-reg-premium:hover {
+        transform: translateY(-5px);
+        background: #fbbf24;
+        color: #134e4a;
+        box-shadow: 0 15px 35px rgba(251, 191, 36, 0.3);
+    }
+
+    .auth-footer {
+        text-align: center;
+        margin-top: 2.5rem;
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 1rem;
+    }
+
+    .auth-footer a {
+        color: #fbbf24;
+        text-decoration: none;
+        font-weight: 700;
+        margin-left: 0.5rem;
+    }
+
+    .auth-footer a:hover {
+        color: white;
+        text-decoration: underline;
+    }
+
+    .error-text {
+        color: #f87171;
+        font-size: 0.8rem;
+        margin-top: 0.4rem;
+        display: block;
+        font-weight: 600;
+    }
+
+    @media (max-width: 600px) {
+        .form-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .form-group-full {
+            grid-column: span 1;
+        }
+
+        .glass-auth-card {
+            padding: 3rem 2rem;
+        }
+    }
+</style>
+
+<div class="auth-page">
+    <div class="glass-auth-card">
+        <a href="{% url 'guide:home' %}" class="btn-back-home">
+            <i class="fas fa-chevron-left"></i> Home
+        </a>
+
+        <div class="auth-header">
+            <h1>Create Account</h1>
+            <p class="subtitle">Join our community of explorers</p>
+        </div>
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-grid">
+                {% for field in form %}
+                <div
+                    class="form-group {% if field.name == 'username' or field.name == 'email' %}form-group-full{% endif %}">
+                    {% if field.name != 'is_guide' %}
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    <input
+                        type="{% if 'password' in field.name %}password{% elif field.name == 'email' %}email{% else %}text{% endif %}"
+                        name="{{ field.name }}" id="{{ field.id_for_label }}" class="glass-input"
+                        placeholder="{{ field.label }}" {% if field.field.required %}required{% endif %}>
+                    {% if field.errors %}
+                    <span class="error-text">{{ field.errors.0 }}</span>
+                    {% endif %}
+                    {% else %}
+                    <div class="checkbox-group form-group-full">
+                        <input type="checkbox" name="{{ field.name }}" id="{{ field.id_for_label }}">
+                        <label for="{{ field.id_for_label }}">Become a Local Expert (Register as a Guide)</label>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+
+            <button type="submit" class="btn-reg-premium">
+                Register Now <i class="fas fa-paper-plane" style="margin-left: 0.5rem;"></i>
+            </button>
+        </form>
+
+        <div class="auth-footer">
+            Already have an account? <a href="{% url 'guide:login' %}">Login here</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

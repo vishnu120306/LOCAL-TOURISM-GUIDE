@@ -1,0 +1,149 @@
+{% extends 'guide/base.html' %}
+
+{% block title %}Search Results - Local Tourist Guide{% endblock %}
+
+{% block content %}
+<div class="container" style="margin-top: 3rem;">
+    <div class="search-header">
+        <h1>Search Results</h1>
+        <p>Results for: <strong>"{{ query }}"</strong></p>
+
+        <form action="{% url 'guide:search' %}" method="GET" class="search-form">
+            <input type="text" name="q" value="{{ query }}" placeholder="Search again..." class="search-input">
+            <button type="submit" class="btn-primary"><i class="fas fa-search"></i></button>
+        </form>
+    </div>
+
+    {% if locations %}
+    <div class="section-title">
+        <h2>Attractions ({{ locations|length }})</h2>
+    </div>
+    <div class="location-grid">
+        {% for location in locations %}
+        <div class="location-card">
+            <div class="location-image">
+                <div class="placeholder-image attraction-placeholder">
+                    <i class="fas fa-landmark"></i>
+                </div>
+            </div>
+            <div class="location-content">
+                <h3>{{ location.name }}</h3>
+                <p>{{ location.address }}</p>
+                <a href="{% url 'guide:location_detail' location.id %}" class="btn-secondary">View Details</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if events %}
+    <div class="section-title">
+        <h2>Events ({{ events|length }})</h2>
+    </div>
+    <div class="location-grid">
+        {% for event in events %}
+        <div class="location-card">
+            <div class="location-image">
+                <div class="placeholder-image event-placeholder">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+            </div>
+            <div class="location-content">
+                <h3>{{ event.name }}</h3>
+                <p>{{ event.description|truncatewords:12 }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if guides %}
+    <div class="section-title">
+        <h2>Guides ({{ guides|length }})</h2>
+    </div>
+    <div class="location-grid">
+        {% for guide in guides %}
+        <div class="location-card">
+            <div class="location-image">
+                <div class="placeholder-image guide-placeholder">
+                    <i class="fas fa-user-tie"></i>
+                </div>
+            </div>
+            <div class="location-content">
+                <h3>{{ guide.name }}</h3>
+                <p>{{ guide.expertise }}</p>
+                <a href="{% url 'guide:book_guide' guide.id %}" class="btn-primary">Book Now</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if not locations and not events and not guides %}
+    <div class="no-results">
+        <i class="fas fa-search" style="font-size: 4rem; color: #cbd5e1;"></i>
+        <h3>No results found</h3>
+        <p>Try searching with different keywords.</p>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+    .search-header {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    .search-header h1 {
+        font-family: 'Playfair Display', serif;
+        color: var(--primary-teal);
+    }
+
+    .search-form {
+        display: flex;
+        gap: 1rem;
+        max-width: 500px;
+        margin: 2rem auto 0;
+    }
+
+    .search-input {
+        flex: 1;
+        padding: 0.75rem 1rem;
+        border: 2px solid #e2e8f0;
+        border-radius: 50px;
+        font-size: 1rem;
+    }
+
+    .no-results {
+        text-align: center;
+        padding: 4rem 2rem;
+    }
+
+    .no-results h3 {
+        margin-top: 1rem;
+        color: var(--text-dark);
+    }
+
+    .no-results p {
+        color: var(--text-light);
+    }
+
+    .attraction-placeholder {
+        background: linear-gradient(135deg, #10b981, #34d399);
+    }
+
+    .event-placeholder {
+        background: linear-gradient(135deg, #f59e0b, #fbbf24);
+    }
+
+    .guide-placeholder {
+        background: linear-gradient(135deg, #0d9488, #14b8a6);
+    }
+
+    .attraction-placeholder i,
+    .event-placeholder i,
+    .guide-placeholder i {
+        color: white;
+    }
+</style>
+{% endblock %}

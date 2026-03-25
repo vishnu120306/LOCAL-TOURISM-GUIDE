@@ -1,0 +1,285 @@
+{% extends 'guide/base.html' %}
+{% load static %}
+
+{% block title %}Book {{ guide.name }} - Local Tourist Guide{% endblock %}
+
+{% block content %}
+<style>
+    /* Full Page Background */
+    body {
+        background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)),
+            url('https://images.unsplash.com/photo-1593693397690-362cb9666fc2?q=80&w=2069') center/cover no-repeat fixed;
+    }
+
+    .booking-page {
+        min-height: 100vh;
+        padding: 6rem 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .booking-container {
+        width: 100%;
+        max-width: 800px;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 40px;
+        padding: 4rem;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .booking-header {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    .booking-header h1 {
+        font-family: 'Playfair Display', serif;
+        font-size: 2.5rem;
+        color: #134e4a;
+        margin-bottom: 1rem;
+        font-weight: 800;
+    }
+
+    .guide-summary {
+        background: #f0fdfa;
+        border-left: 6px solid #134e4a;
+        padding: 2rem;
+        border-radius: 12px;
+        margin-bottom: 3rem;
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+    }
+
+    .guide-avatar {
+        width: 90px;
+        height: 90px;
+        background: #e2e8f0;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 3px solid white;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .guide-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .guide-avatar i {
+        font-size: 2.5rem;
+        color: #94a3b8;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+    }
+
+    .guide-info h3 {
+        color: #134e4a;
+        font-size: 1.5rem;
+        margin-bottom: 0.25rem;
+        font-family: 'Playfair Display', serif;
+    }
+
+    .guide-info p {
+        color: #0f766e;
+        font-weight: 700;
+        font-size: 1rem;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .form-group {
+        margin-bottom: 2rem;
+    }
+
+    .form-group label {
+        display: block;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 0.75rem;
+        font-size: 1.1rem;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 1.25rem;
+        border: 2px solid #e2e8f0;
+        border-radius: 16px;
+        font-size: 1rem;
+        font-family: 'Inter', sans-serif;
+        transition: all 0.3s ease;
+        background: white;
+    }
+
+    .form-control:focus {
+        border-color: #134e4a;
+        outline: none;
+        box-shadow: 0 0 0 4px rgba(19, 78, 74, 0.1);
+    }
+
+    .btn-confirm {
+        width: 100%;
+        background: #134e4a;
+        color: white;
+        padding: 1.25rem;
+        border-radius: 50px;
+        font-size: 1.2rem;
+        font-weight: 700;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        margin-top: 1rem;
+        box-shadow: 0 10px 20px rgba(19, 78, 74, 0.2);
+    }
+
+    .btn-confirm:hover {
+        background: #0d9488;
+        transform: translateY(-3px);
+        box-shadow: 0 15px 30px rgba(19, 78, 74, 0.3);
+    }
+
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: white;
+        text-decoration: none;
+        margin-bottom: 2rem;
+        font-weight: 700;
+        transition: all 0.3s ease;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .back-link:hover {
+        color: #fbbf24;
+        transform: translateX(-5px);
+    }
+
+    select.form-control {
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23134e4a'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 1.25rem center;
+        background-size: 1.5rem;
+    }
+
+    @media (max-width: 768px) {
+        .form-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .booking-container {
+            padding: 2.5rem;
+        }
+    }
+</style>
+
+<div class="booking-page">
+    <div style="width: 100%; max-width: 850px;">
+        <a href="javascript:history.back()" class="back-link">
+            <i class="fas fa-arrow-left"></i> Back to Profile
+        </a>
+
+        <div class="booking-container">
+            <div class="booking-header">
+                <h1>Book Your Personal Tour</h1>
+                <p>Verify your details and customize your experience with {{ guide.name }}.</p>
+            </div>
+
+            <div class="guide-summary">
+                <div class="guide-avatar">
+                    {% if guide.image %}
+                    <img src="{{ guide.image.url }}" alt="{{ guide.name }}">
+                    {% else %}
+                    <i class="fas fa-user-tie"></i>
+                    {% endif %}
+                </div>
+                <div class="guide-info">
+                    <h3>{{ guide.name }}</h3>
+                    <p><i class="fas fa-tag"></i> Daily Rate: ₹{{ guide.daily_rate }}</p>
+                </div>
+            </div>
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="user_name">Your Full Name</label>
+                        <input type="text" id="user_name" name="user_name" class="form-control"
+                            placeholder="Enter your name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="user_email">Email Address</label>
+                        <input type="email" id="user_email" name="user_email" class="form-control"
+                            placeholder="your@email.com" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="location">Select Attraction (Optional)</label>
+                    <select id="location" name="location" class="form-control">
+                        <option value="">Choose a place you'd like to visit...</option>
+                        {% for location in locations %}
+                        <option value="{{ location.id }}">{{ location.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="event">Select Event (Optional)</label>
+                        <select id="event" name="event" class="form-control">
+                            <option value="">Any specific event?</option>
+                            {% for event in events %}
+                            <option value="{{ event.id }}">{{ event.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="transport">Preferred Transport (Optional)</label>
+                        <select id="transport" name="transport" class="form-control">
+                            <option value="">Choose transport...</option>
+                            {% for transport in transports %}
+                            <option value="{{ transport.id }}">{{ transport.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="date">Travel Date</label>
+                    <input type="date" id="date" name="date" class="form-control" required>
+                </div>
+
+                <button type="submit" class="btn-confirm">
+                    Confirm Booking <i class="fas fa-lock"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const dateInput = document.getElementById('date');
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.setAttribute('min', today);
+    });
+</script>
+{% endblock %}

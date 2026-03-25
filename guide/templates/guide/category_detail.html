@@ -1,0 +1,250 @@
+{% extends 'guide/base.html' %}
+
+{% block title %}{{ category.name }} - Local Tourism Guide{% endblock %}
+
+{% block content %}
+<style>
+    /* Full Page Background */
+    body {
+        background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)),
+            url('https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=2021') center/cover no-repeat fixed;
+    }
+
+    .category-page {
+        background: transparent;
+        padding-bottom: 5rem;
+    }
+
+    /* Hero Area / Title Section */
+    .category-hero {
+        padding: 6rem 2rem 4rem;
+        text-align: center;
+        color: white;
+    }
+
+    .category-hero h1 {
+        font-family: 'Playfair Display', serif;
+        font-size: 4.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        text-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .category-hero p {
+        font-size: 1.4rem;
+        opacity: 0.9;
+        max-width: 700px;
+        margin: 0 auto;
+        line-height: 1.6;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Main Container */
+    .container {
+        background: transparent;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+    }
+
+    /* Location Cards */
+    .location-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 2.5rem;
+        margin-top: 2rem;
+    }
+
+    .location-card {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .location-card:hover {
+        transform: translateY(-12px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .location-image {
+        height: 220px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .location-content {
+        padding: 2rem;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .location-content h3 {
+        font-size: 1.6rem;
+        margin-bottom: 0.5rem;
+        color: #134e4a;
+        font-weight: 700;
+    }
+
+    .location-content .address {
+        color: #64748b;
+        font-size: 0.95rem;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .location-content .address i {
+        color: #fbbf24;
+    }
+
+    .location-content .desc {
+        color: #475569;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+    }
+
+    /* Button Styling */
+    .btn-details {
+        margin-top: auto;
+        background: #134e4a;
+        color: white;
+        padding: 1rem 1.5rem;
+        border-radius: 12px;
+        text-decoration: none;
+        font-weight: 700;
+        text-align: center;
+        transition: all 0.3s ease;
+        display: block;
+        box-shadow: 0 4px 10px rgba(19, 78, 74, 0.2);
+    }
+
+    .btn-details:hover {
+        background: #0f766e;
+        transform: scale(1.02);
+        box-shadow: 0 6px 15px rgba(19, 78, 74, 0.3);
+    }
+
+    .btn-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: white;
+        text-decoration: none;
+        margin-bottom: 2rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-back:hover {
+        color: #fbbf24;
+        transform: translateX(-5px);
+    }
+
+    /* Meet Guides Button */
+    .meet-guides-wrap {
+        margin: 4rem 0 2rem;
+        display: flex;
+        justify-content: center;
+    }
+
+    .btn-meet-guides {
+        display: inline-flex;
+        align-items: center;
+        gap: 1rem;
+        background: linear-gradient(135deg, #134e4a 0%, #0f766e 100%);
+        color: white;
+        padding: 1.25rem 3rem;
+        border-radius: 100px;
+        text-decoration: none;
+        font-weight: 800;
+        font-size: 1.2rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        box-shadow: 0 15px 35px rgba(15, 118, 110, 0.3);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-meet-guides:hover {
+        transform: translateY(-8px) scale(1.03);
+        background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+        color: #134e4a;
+        box-shadow: 0 20px 45px rgba(251, 191, 36, 0.4);
+        border-color: white;
+    }
+
+    .btn-meet-guides i {
+        font-size: 1.4rem;
+    }
+
+    .empty-msg {
+        text-align: center;
+        color: white;
+        font-size: 1.2rem;
+        grid-column: 1/-1;
+        padding: 4rem 0;
+    }
+
+    @media (max-width: 768px) {
+        .category-hero h1 {
+            font-size: 3rem;
+        }
+    }
+</style>
+
+<div class="category-page">
+    <div class="category-hero">
+        <div class="hero-content">
+            <h1>{{ category.name }}</h1>
+            <p>{{ category.description }}</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <a href="javascript:history.back()" class="btn-back">
+            <i class="fas fa-arrow-left"></i> Back to Previous
+        </a>
+
+        <!-- Meet Our Guides CTA -->
+        <div class="meet-guides-wrap">
+            <a href="{% url 'guide:guide_list' %}" class="btn-meet-guides">
+                <i class="fas fa-id-card"></i> Meet Local {{ category.name }} Guides
+            </a>
+        </div>
+
+        <div class="location-grid">
+            {% for location in locations %}
+            <div class="location-card">
+                <div class="location-image">
+                    {% if location.image %}
+                    <img src="{{ location.image.url }}" alt="{{ location.name }}"
+                        style="width: 100%; height: 100%; object-fit: cover;">
+                    {% else %}
+                    <div
+                        style="display: flex; align-items: center; justify-content: center; height: 100%; background: #f1f5f9;">
+                        <i class="fas fa-mountain" style="font-size: 3rem; color: #cbd5e1;"></i>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="location-content">
+                    <h3>{{ location.name }}</h3>
+                    <p class="address"><i class="fas fa-map-marker-alt"></i> {{ location.address }}</p>
+                    <p class="desc">{{ location.description|truncatewords:22 }}</p>
+                    <a href="{% url 'guide:location_detail' location.id %}" class="btn-details">
+                        Explore Destinations <i class="fas fa-arrow-right" style="margin-left: 0.5rem;"></i>
+                    </a>
+                </div>
+            </div>
+            {% empty %}
+            <p class="empty-msg">No destinations found in this category. But don't worry, the world is vast!</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

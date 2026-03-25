@@ -1,0 +1,637 @@
+{% extends 'guide/base.html' %}
+
+{% block title %}My Itinerary - Local Tourist Guide{% endblock %}
+
+{% block content %}
+<!-- Hero Section for My Itinerary -->
+<div class="itinerary-hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <h1 class="hero-title">My <span>Itinerary</span></h1>
+        <p class="hero-subtitle">View your planned trips and managed bookings</p>
+
+    </div>
+</div>
+
+<a href="javascript:history.back()" class="btn-back-link">
+    <i class="fas fa-arrow-left"></i> Back
+</a>
+
+
+<!-- CURATED ITINERARIES SECTION -->
+<div class="curated-section">
+    <div class="section-header-modern">
+        <h2><i class="fas fa-route"></i> Curated Itineraries</h2>
+        <p>Hand-picked travel plans for the ultimate Kerala experience</p>
+    </div>
+
+    <div class="itinerary-grid">
+        <!-- Itinerary 1 -->
+        <div class="itinerary-card">
+            <div class="itinerary-image">
+                <img src="https://images.unsplash.com/photo-1596323605872-4752b0f4ce72?q=80&w=2070" alt="Munnar Hills">
+                <div class="itinerary-overlay">
+                    <span class="duration-badge"><i class="fas fa-clock"></i> 3 Days</span>
+                </div>
+            </div>
+            <div class="itinerary-content">
+                <h3>Munnar Mist & Tea</h3>
+                <p class="itinerary-location"><i class="fas fa-map-marker-alt"></i> Munnar, Kerala</p>
+                <p class="itinerary-desc">A refreshing 3-day retreat into the misty hills, covering tea gardens,
+                    Mattupetty Dam, and private trekking spots.</p>
+                <div class="itinerary-footer">
+                    <div class="itinerary-price">
+                        <span class="price-from">From</span>
+                        <span class="price-amount">₹12,000</span>
+                    </div>
+                    <a href="{% url 'guide:book_item' 'trip' 5 %}" class="btn-view-plan">
+                        Book Plan <i class="fas fa-calendar-check"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Itinerary 2 -->
+        <div class="itinerary-card">
+            <div class="itinerary-image">
+                <img src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/30/fa/77/05/alleppey-backwaters-vibe.jpg?w=1200&h=-1&s=1"
+                    alt="Alleppey Houseboat">
+                <div class="itinerary-overlay">
+                    <span class="duration-badge"><i class="fas fa-clock"></i> 2 Days</span>
+                </div>
+            </div>
+            <div class="itinerary-content">
+                <h3>Alleppey Backwater Bliss</h3>
+                <p class="itinerary-location"><i class="fas fa-water"></i> Alappuzha, Kerala</p>
+                <p class="itinerary-desc">Overnight luxury houseboat cruise through the serene backwaters, including
+                    authentic Kuttanadan meals.</p>
+                <div class="itinerary-footer">
+                    <div class="itinerary-price">
+                        <span class="price-from">From</span>
+                        <span class="price-amount">₹15,000</span>
+                    </div>
+                    <a href="{% url 'guide:book_item' 'trip' 6 %}" class="btn-view-plan">
+                        Book Plan <i class="fas fa-calendar-check"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Itinerary 3 -->
+        <div class="itinerary-card">
+            <div class="itinerary-image">
+                <img src="https://images.unsplash.com/photo-1629088686699-24b4a9235cb3?q=80&w=2070" alt="Wayanad Wild">
+                <div class="itinerary-overlay">
+                    <span class="duration-badge"><i class="fas fa-clock"></i> 4 Days</span>
+                </div>
+            </div>
+            <div class="itinerary-content">
+                <h3>Wild Wayanad Escape</h3>
+                <p class="itinerary-location"><i class="fas fa-tree"></i> Wayanad, Kerala</p>
+                <p class="itinerary-desc">Explore the Edakkal Caves, Banasura Sagar Dam, and spot wildlife in the
+                    deep forests of Wayanad.</p>
+                <div class="itinerary-footer">
+                    <div class="itinerary-price">
+                        <span class="price-from">From</span>
+                        <span class="price-amount">₹18,500</span>
+                    </div>
+                    <a href="{% url 'guide:book_item' 'trip' 7 %}" class="btn-view-plan">
+                        Book Plan <i class="fas fa-calendar-check"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<style>
+    /* Full Page Background */
+    body {
+        background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5)),
+            url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=2070') center/cover no-repeat fixed;
+    }
+
+    /* Hero Section */
+    .itinerary-hero {
+        height: 50vh;
+        background: transparent;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: white;
+        margin-top: -80px;
+        padding-top: 80px;
+    }
+
+    .itinerary-hero .hero-overlay {
+        display: none;
+        /* Remove the teal overlay */
+    }
+
+    .itinerary-hero .hero-content {
+        position: relative;
+        z-index: 2;
+        max-width: 800px;
+        padding: 0 2rem;
+    }
+
+    .itinerary-hero .hero-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 4rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .itinerary-hero .hero-title span {
+        color: #fbbf24;
+        font-style: italic;
+    }
+
+    .itinerary-hero .hero-subtitle {
+        font-size: 1.25rem;
+        margin-bottom: 2rem;
+        opacity: 0.95;
+    }
+
+    /* Content Container - Transparent */
+    .container {
+        background: transparent;
+        backdrop-filter: none;
+        border-radius: 0;
+        padding: 3rem 2rem;
+        box-shadow: none;
+    }
+
+    /* Back Link */
+    .btn-back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: white;
+        text-decoration: none;
+        margin-bottom: 2rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn-back-link:hover {
+        color: #fbbf24;
+        gap: 0.75rem;
+    }
+
+    /* Bookings Section */
+    .bookings-section {
+        margin-bottom: 4rem;
+    }
+
+    .section-title-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .section-title-bar h2 {
+        font-family: 'Playfair Display', serif;
+        font-size: 2rem;
+        color: white;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .section-title-bar h2 i {
+        color: #fbbf24;
+    }
+
+    .booking-count {
+        background: #e0f2fe;
+        color: var(--primary-teal);
+        padding: 0.5rem 1rem;
+        border-radius: 50px;
+        font-weight: 700;
+        font-size: 0.9rem;
+    }
+
+    .warning-border {
+        border-bottom-color: #fbbf24 !important;
+    }
+
+    .notification-badge {
+        background: #fef3c7;
+        color: #d97706;
+    }
+
+    .notification-card {
+        border-left-color: #fbbf24 !important;
+        background: #fffcf0;
+    }
+
+    .notification-icon {
+        background: linear-gradient(135deg, #fbbf24, #d97706) !important;
+    }
+
+    /* Modern Booking Cards */
+    .bookings-timeline {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .booking-card-modern {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transition: all 0.3s ease;
+        border-left: 4px solid var(--primary-teal);
+    }
+
+    .booking-card-modern:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    }
+
+    .booking-status-badge {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        padding: 0.5rem 1rem;
+        border-radius: 50px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .booking-status-badge.pending {
+        background: #fef3c7;
+        color: #d97706;
+    }
+
+    .booking-status-badge.confirmed {
+        background: #d1fae5;
+        color: #059669;
+    }
+
+    .booking-status-badge.cancelled {
+        background: #fee2e2;
+        color: #dc2626;
+    }
+
+    .booking-card-content {
+        padding: 1.5rem;
+        position: relative;
+    }
+
+    .booking-header {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .booking-icon {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, #0f766e, #14b8a6);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .booking-icon i {
+        font-size: 1.5rem;
+        color: white;
+    }
+
+    .booking-info {
+        flex: 1;
+    }
+
+    .booking-info h3 {
+        font-size: 1.25rem;
+        margin-bottom: 0.5rem;
+        color: var(--text-dark);
+    }
+
+    .booking-meta-info {
+        display: flex;
+        gap: 1.5rem;
+        flex-wrap: wrap;
+    }
+
+    .meta-item {
+        color: var(--text-gray);
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .meta-item i {
+        color: var(--primary-teal);
+    }
+
+    .booking-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 1rem;
+        border-top: 1px solid #e2e8f0;
+    }
+
+    .booking-price {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .price-label {
+        font-size: 0.75rem;
+        color: var(--text-gray);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .price-value {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: var(--primary-teal);
+    }
+
+    .confirmed-text {
+        color: #059669;
+    }
+
+    .booking-date-small {
+        color: var(--text-gray);
+        font-size: 0.85rem;
+    }
+
+    /* Empty State */
+    .no-bookings-modern {
+        text-align: center;
+        padding: 4rem 2rem;
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        margin-bottom: 4rem;
+    }
+
+    .empty-state-icon {
+        width: 100px;
+        height: 100px;
+        background: linear-gradient(135deg, #e0f2fe, #bae6fd);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+    }
+
+    .empty-state-icon i {
+        font-size: 3rem;
+        color: var(--primary-teal);
+    }
+
+    .no-bookings-modern h3 {
+        font-size: 1.75rem;
+        margin-bottom: 0.5rem;
+        color: var(--text-dark);
+    }
+
+    .no-bookings-modern p {
+        color: var(--text-gray);
+        margin-bottom: 0.5rem;
+    }
+
+    .suggestion {
+        font-size: 1.1rem;
+        margin-top: 1rem !important;
+    }
+
+    .btn-explore-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        background: var(--primary-teal);
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 600;
+        margin-top: 1.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .btn-explore-cta:hover {
+        background: #0d9488;
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(15, 118, 110, 0.3);
+    }
+
+    /* Curated Section */
+    .curated-section {
+        margin-top: 5rem;
+    }
+
+    .section-header-modern {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    .section-header-modern h2 {
+        font-family: 'Playfair Display', serif;
+        font-size: 2.5rem;
+        color: white;
+        margin-bottom: 0.5rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 1rem;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .section-header-modern h2 i {
+        color: #fbbf24;
+    }
+
+    .section-header-modern p {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 1.1rem;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Itinerary Grid */
+    .itinerary-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 2rem;
+    }
+
+    .itinerary-card {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .itinerary-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    }
+
+    .itinerary-image {
+        height: 240px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .itinerary-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .itinerary-card:hover .itinerary-image img {
+        transform: scale(1.1);
+    }
+
+    .itinerary-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.4));
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-end;
+        padding: 1rem;
+    }
+
+    .duration-badge {
+        background: rgba(255, 255, 255, 0.95);
+        color: var(--primary-teal);
+        padding: 0.5rem 1rem;
+        border-radius: 50px;
+        font-weight: 700;
+        font-size: 0.85rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .itinerary-content {
+        padding: 1.5rem;
+    }
+
+    .itinerary-content h3 {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+        color: var(--text-dark);
+    }
+
+    .itinerary-location {
+        color: var(--text-gray);
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .itinerary-location i {
+        color: var(--primary-teal);
+    }
+
+    .itinerary-desc {
+        color: var(--text-gray);
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+    }
+
+    .itinerary-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 1rem;
+        border-top: 1px solid #e2e8f0;
+    }
+
+    .itinerary-price {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .price-from {
+        font-size: 0.75rem;
+        color: var(--text-gray);
+        text-transform: uppercase;
+    }
+
+    .price-amount {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: var(--primary-teal);
+    }
+
+    .btn-view-plan {
+        color: var(--primary-teal);
+        text-decoration: none;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .btn-view-plan:hover {
+        gap: 0.75rem;
+        color: #0d9488;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .itinerary-hero .hero-title {
+            font-size: 2.5rem;
+        }
+
+        .search-wrapper {
+            flex-direction: column;
+            border-radius: 16px;
+        }
+
+        .search-wrapper .btn-search {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .booking-header {
+            flex-direction: column;
+        }
+
+        .booking-footer {
+            flex-direction: column;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .section-title-bar {
+            flex-direction: column;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+    }
+</style>
+{% endblock %}

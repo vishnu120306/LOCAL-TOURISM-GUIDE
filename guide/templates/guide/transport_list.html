@@ -1,0 +1,359 @@
+{% extends 'guide/base.html' %}
+{% load static %}
+
+{% block title %}Transport Options - Local Tourist Guide{% endblock %}
+
+{% block content %}
+<style>
+    /* Full Page Background */
+    body {
+        background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)),
+            url('https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=2021') center/cover no-repeat fixed;
+    }
+
+    .transport-page {
+        background: transparent;
+        min-height: 100vh;
+        padding-bottom: 5rem;
+    }
+
+    /* Hero Section */
+    .exploring-hero {
+        height: 60vh;
+        background: transparent;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: white;
+        margin-top: -80px;
+        padding-top: 80px;
+    }
+
+    .exploring-hero .hero-overlay {
+        display: none;
+    }
+
+    .exploring-hero .hero-content {
+        position: relative;
+        z-index: 2;
+        padding: 0 20px;
+    }
+
+    .exploring-hero h1 {
+        font-family: 'Playfair Display', serif;
+        font-size: 4rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .exploring-hero .highlight {
+        color: #fbbf24;
+        font-style: italic;
+    }
+
+    .exploring-hero p {
+        font-size: 1.5rem;
+        opacity: 0.95;
+        max-width: 800px;
+        margin: 0 auto;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .explore-nav-buttons {
+        margin-top: 2.5rem;
+        display: flex;
+        gap: 1.5rem;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .btn-nav-hero {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: white;
+        padding: 1rem 2.5rem;
+        border-radius: 100px;
+        font-weight: 700;
+        text-decoration: none;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        font-size: 1.1rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-nav-hero:hover,
+    .btn-nav-hero.active {
+        background: #fbbf24;
+        border-color: #fbbf24;
+        color: #134e4a;
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(251, 191, 36, 0.4);
+    }
+
+    /* Main Container */
+    .container {
+        background: transparent;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+    }
+
+    .filter-section {
+        padding: 2.5rem 0 1.5rem;
+        color: white;
+        font-size: 1.2rem;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        font-weight: 500;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    /* Transport Cards */
+    .attractions-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 2.5rem;
+        margin-bottom: 4rem;
+    }
+
+    .attraction-card {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .attraction-card:hover {
+        transform: translateY(-12px);
+        box-shadow: 0 20px 45px rgba(0, 0, 0, 0.3);
+    }
+
+    .card-image {
+        height: 220px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .card-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s ease;
+    }
+
+    .attraction-card:hover .card-image img {
+        transform: scale(1.1);
+    }
+
+    .card-image .placeholder-image {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #134e4a, #0f766e);
+    }
+
+    .card-image .placeholder-image i {
+        font-size: 5rem;
+        color: white;
+        opacity: 0.9;
+    }
+
+    .card-content {
+        padding: 2.5rem;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .card-content h3 {
+        font-size: 1.8rem;
+        margin-bottom: 0.5rem;
+        color: #134e4a;
+        font-weight: 800;
+        font-family: 'Playfair Display', serif;
+    }
+
+    .location-address {
+        color: #0f766e;
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin-bottom: 1.25rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .location-address i {
+        color: #fbbf24;
+    }
+
+    .description {
+        color: #475569;
+        line-height: 1.7;
+        margin-bottom: 2rem;
+        flex-grow: 1;
+        font-size: 1.05rem;
+    }
+
+    .card-footer {
+        padding-top: 1.5rem;
+        border-top: 1px solid #f1f5f9;
+        margin-top: auto;
+    }
+
+    .btn-view {
+        background: #134e4a;
+        color: white !important;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 700;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        box-shadow: 0 4px 12px rgba(19, 78, 74, 0.2);
+        font-size: 1.1rem;
+    }
+
+    .btn-view:hover {
+        background: #0f766e;
+        transform: scale(1.02);
+        box-shadow: 0 6px 20px rgba(19, 78, 74, 0.3);
+    }
+
+    /* Back Link */
+    .back-link {
+        text-align: center;
+        padding: 2rem 0 5rem;
+    }
+
+    .btn-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: white;
+        text-decoration: none;
+        font-weight: 700;
+        padding: 1.2rem 3rem;
+        border: 2px solid rgba(255, 255, 255, 0.5);
+        border-radius: 100px;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+        font-size: 1.1rem;
+    }
+
+    .btn-back:hover {
+        background: white;
+        color: #134e4a;
+        border-color: white;
+        transform: scale(1.05);
+    }
+
+    .no-attractions {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 6rem 2rem;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(15px);
+        border-radius: 40px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: white;
+    }
+
+    .no-attractions i {
+        font-size: 6rem;
+        color: rgba(255, 255, 255, 0.4);
+        margin-bottom: 2rem;
+    }
+
+    @media (max-width: 768px) {
+        .exploring-hero h1 {
+            font-size: 2.8rem;
+        }
+    }
+</style>
+
+<div class="transport-page">
+    <div class="exploring-hero">
+        <div class="hero-content">
+            <h1>Smooth <span>Travel Options</span></h1>
+            <p>From backwater cruises to road trips, move through paradise with ease.</p>
+
+            <div class="explore-nav-buttons">
+                <a href="{% url 'guide:attractions' %}" class="btn-nav-hero">Attractions</a>
+                <a href="{% url 'guide:events' %}" class="btn-nav-hero">Events</a>
+                <a href="{% url 'guide:transport_list' %}" class="btn-nav-hero active">Transport</a>
+                <a href="{% url 'guide:guide_list' %}" class="btn-nav-hero">Our Guides</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="filter-section">
+            <p><i class="fas fa-route" style="margin-right: 0.5rem; color: #fbbf24;"></i> {{ transports|length }}
+                premium transport options serving Kerala</p>
+        </div>
+
+        <div class="attractions-grid">
+            {% for transport in transports %}
+            <div class="attraction-card">
+                <div class="card-image">
+                    {% if transport.image %}
+                    <img src="{{ transport.image.url }}" alt="{{ transport.name }}">
+                    {% else %}
+                    <div class="placeholder-image">
+                        {% if transport.transport_type == 'BOAT' %}
+                        <i class="fas fa-ship"></i>
+                        {% elif transport.transport_type == 'TAXI' %}
+                        <i class="fas fa-car-side"></i>
+                        {% elif transport.transport_type == 'TUKTUK' %}
+                        <i class="fas fa-motorcycle"></i>
+                        {% else %}
+                        <i class="fas fa-shuttle-van"></i>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="card-content">
+                    <h3>{{ transport.name }}</h3>
+                    <p class="location-address">
+                        <i class="fas fa-rupee-sign"></i> Starting at ₹{{ transport.price_per_km }}<span>/km</span>
+                    </p>
+                    <p class="description">{{ transport.description }}</p>
+
+                    <div class="card-footer">
+                        <a href="{% url 'guide:book_item' 'transport' transport.id %}" class="btn-view">
+                            Book Now <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="no-attractions">
+                <i class="fas fa-road"></i>
+                <h3>No transport options found at the moment</h3>
+                <p>We are adding more vehicles soon. Check back shortly!</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="back-link">
+            <a href="{% url 'guide:start_exploring' %}" class="btn-back">
+                <i class="fas fa-compass"></i> Return to Explore
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

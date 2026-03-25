@@ -1,0 +1,154 @@
+{% extends 'guide/base.html' %}
+{% load static %}
+
+{% block title %}Choose Content Type - Local Tourist Guide{% endblock %}
+
+{% block content %}
+<style>
+    /* Full Page Background */
+    body {
+        background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)),
+            url('https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?q=80&w=2070') center/cover no-repeat fixed;
+    }
+
+    .selection-page {
+        background: transparent;
+        min-height: 100vh;
+        padding: 6rem 0 5rem;
+    }
+
+    .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 0 2rem;
+    }
+
+    .selection-header {
+        text-align: center;
+        margin-bottom: 4rem;
+        color: white;
+    }
+
+    .selection-header h1 {
+        font-family: 'Playfair Display', serif;
+        font-size: 3.5rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+        text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .selection-header p {
+        font-size: 1.25rem;
+        opacity: 0.9;
+        font-weight: 500;
+    }
+
+    /* Selection Grid */
+    .selection-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 2rem;
+    }
+
+    .selection-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border-radius: 30px;
+        padding: 3rem 2rem;
+        text-align: center;
+        text-decoration: none;
+        color: #134e4a;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .selection-card:hover {
+        transform: translateY(-10px) scale(1.05);
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+        background: white;
+        border-color: #fbbf24;
+    }
+
+    .selection-card i {
+        font-size: 3.5rem;
+        color: #fbbf24;
+        filter: drop-shadow(0 4px 10px rgba(251, 191, 36, 0.3));
+    }
+
+    .selection-card h3 {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.8rem;
+        font-weight: 800;
+        margin: 0;
+    }
+
+    .selection-card p {
+        color: #64748b;
+        font-size: 0.95rem;
+        font-weight: 500;
+        line-height: 1.5;
+        margin: 0;
+    }
+
+    .btn-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: white;
+        text-decoration: none;
+        margin-bottom: 3rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-back:hover {
+        color: #fbbf24;
+        transform: translateX(-5px);
+    }
+</style>
+
+<div class="selection-page">
+    <div class="container">
+        <a href="{% url 'guide:home' %}" class="btn-back">
+            <i class="fas fa-arrow-left"></i> Back to Home
+        </a>
+
+        <div class="selection-header">
+            <h1>What would you like to <span style="color: #fbbf24;">Add</span>?</h1>
+            <p>Choose the type of place or service you want to share with the world.</p>
+        </div>
+
+        <div class="selection-grid">
+            <a href="{% url 'guide:add_location' %}" class="selection-card">
+                <i class="fas fa-mountain-sun"></i>
+                <h3>Attraction</h3>
+                <p>Register a new destination, viewpoint, or natural landmark.</p>
+            </a>
+
+            <a href="{% url 'guide:add_event' %}" class="selection-card">
+                <i class="fas fa-calendar-star"></i>
+                <h3>Event</h3>
+                <p>Share local festivals, exhibitions, or cultural celebrations.</p>
+            </a>
+
+            <a href="{% url 'guide:add_transport' %}" class="selection-card">
+                <i class="fas fa-shuttle-van"></i>
+                <h3>Transport</h3>
+                <p>Offer your taxi, houseboat, or tour bus services.</p>
+            </a>
+
+            <a href="{% url 'guide:add_itinerary' %}" class="selection-card">
+                <i class="fas fa-route"></i>
+                <h3>Itinerary</h3>
+                <p>Create a multi-day trip or curated travel experience.</p>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
